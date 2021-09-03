@@ -220,12 +220,12 @@ public class IO_Datastore implements Serializable {
      * For storing the paths to the directories (at each level including the
      * root level) in which nextID is to be stored. This grows with
      * {@link #levels} as the file store grows. If the file store grows wider it
-     * also must be modified. lps[0] is the absolute path to the root
-     * directory; lps[1] is the path to the directory in lps[0]
-     * of the current highest leaf; each other lps[n] is either: the
-     * path to the directory containing the current highest leaf directory; or,
-     * it is another subdirectory in lps[n - 1] that contains it; etc... 
-     * lps[levels - 1] is the parent of the Highest Leaf Directory.
+     * also must be modified. lps[0] is the absolute path to the root directory;
+     * lps[1] is the path to the directory in lps[0] of the current highest
+     * leaf; each other lps[n] is either: the path to the directory containing
+     * the current highest leaf directory; or, it is another subdirectory in
+     * lps[n - 1] that contains it; etc... lps[levels - 1] is the parent of the
+     * Highest Leaf Directory.
      */
     protected IO_Path[] lps;
 
@@ -365,9 +365,9 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param dir The FileStore directory.
-     * @return The file store at {@code dir} creating it first if it does not 
+     * @return The file store at {@code dir} creating it first if it does not
      * exist.
      * @throws Exception If encountered.
      */
@@ -376,13 +376,12 @@ public class IO_Datastore implements Serializable {
         if (Files.exists(dir)) {
             fs = new IO_Datastore(dir);
         } else {
-            fs = new IO_Datastore(dir.getParent(), 
+            fs = new IO_Datastore(dir.getParent(),
                     dir.getFileName().toString());
         }
         return fs;
     }
-    
-    
+
     /**
      * @return A String description of this.
      */
@@ -420,9 +419,9 @@ public class IO_Datastore implements Serializable {
     /**
      * Calculates and returns the number of levels needed for a file store with
      * range of {@code range} and {@code n} total number of files to store. If
-     * the result is larger than {@link Generic_Math#SHORT_MAXVALUE} then this
-     * would be too deep. In such a case then it may still be possible to store
-     * all the files but only if {@code range} is increased.
+     * the result is larger than {@link Short#MAX_VALUE} then this would be too
+     * deep. In such a case then it may still be possible to store all the files
+     * but only if {@code range} is increased.
      *
      * @param n the number of files
      * @param range the range of the file store
@@ -772,7 +771,7 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * Add {@code v} to the value of {@code l} at position {@code p}. A generic 
+     * Add {@code v} to the value of {@code l} at position {@code p}. A generic
      * version of this code is in uk.ac.leeds.ccg.math.util.Math_Collections
      *
      * @param l The list to add to.
@@ -785,14 +784,14 @@ public class IO_Datastore implements Serializable {
         l.remove(pos);
         l.add(pos, Math.addExact(v, v0));
     }
-    
+
     /**
-     * @return a copy of {@link #baseDir}. 
+     * @return a copy of {@link #baseDir}.
      */
     public IO_Path getBaseDir() {
         return new IO_Path(baseDir);
     }
-    
+
     /**
      * Tests the integrity of the file store from its base directory.
      *
@@ -800,7 +799,7 @@ public class IO_Datastore implements Serializable {
      * @throws java.io.IOException If the file store lacks integrity.
      */
     public final boolean testIntegrity() throws IOException {
-        try (Stream<Path> paths = Files.walk(root.getPath())) {
+        try ( Stream<Path> paths = Files.walk(root.getPath())) {
             boolean ok;
             try {
                 ok = paths.allMatch(path -> testPath(path));
