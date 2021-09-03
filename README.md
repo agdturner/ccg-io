@@ -1,9 +1,10 @@
-# [agdt-java-io](https://github.com/agdturner/agdt-java-io) - A lightweight input/output utility library with a basic file based data store.
+# [agdt-java-io](https://github.com/agdturner/agdt-java-io)
+- A lightweight library offering a file based data store and some useful input/output utilities.
 
 ## Description
-A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing:
-- [IO_Datastore](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java) - a class for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree in a well organised (easy to retrieve) and extendable (easy to store more) way.
-- [IO_Utilities](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - a class of static methods useful for input and output.
+[Modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) and dependent only on a small part of the [openJDK](https://openjdk.java.net/). The library provides 3 classes:
+- [IO_Datastore](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree.
+- [IO_Utilities](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
 - [IO_Path](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
 
 ## Latest versioned release
