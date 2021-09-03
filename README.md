@@ -2,9 +2,9 @@
 
 ## Description
 A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing:
-- [IO_Datastore](https://github.com/agdturner/agdt-java-io/blob/master/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java) - a class for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree in a well organised (easy to retrieve) and extendable (easy to store more) way.
-- [IO_Utilities](https://github.com/agdturner/agdt-java-io/blob/master/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - a class of static methods useful for input and output.
-- [IO_Path](https://github.com/agdturner/agdt-java-io/blob/master/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
+- [IO_Datastore](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java) - a class for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree in a well organised (easy to retrieve) and extendable (easy to store more) way.
+- [IO_Utilities](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - a class of static methods useful for input and output.
+- [IO_Path](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
 
 ## Latest versioned release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
@@ -20,7 +20,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 
 ## Development history
 ### Origin
-This code began development bundled together with lots of other code developed for an academic research project. In September 2021, the io part was migrated from [agdt-java-generic](https://github.com/agdturner/agdt-java-generic) to begin a new life here. It might not change much, but this is part of a reorganisation of the developers libraries to make thing more lightweight and modular.
+This code was originally developed for an academic research project over a decade before it was migrated here from [agdt-java-generic](https://github.com/agdturner/agdt-java-generic) in September 2021 as part of a major code reorganisation.
 
 ## Contributions
 - Welcome.
@@ -30,7 +30,7 @@ This code began development bundled together with lots of other code developed f
 
 ## Package details
 
-### [IO_Datastore](https://github.com/agdturner/agdt-java-io/tree/master/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java)
+### [IO_Datastore](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java)
 For storing files in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree in a well organised (easy to retrieve) and extendable (easy to store more) way. Each file is stored in a leaf directory. Leaf directories are found at level 0 of the file store. The 1st leaf directory has the name 0, the 2nd leaf directory has the name 1, the nth leaf directory has the name n where n is a positive integer. A data store is comprised of a base directory in which there is a root directory. The root directory indicates how many files are stored in the data store using a range given in the directory name. The minimum of the range is 0 and the maximum is a positive integer number. These two numbers are separated by {@link #SEP} e.g. "0_99". The root directory will contain one or more subdirectories named in a similar style to the root directory e.g. "0_9". The maximum number will be less than or equal to that of the root directory. The range is a parameter that can be set when initialising a data store. It controls how many subdirectories there can be at each level, and ultimately this controls how many levels of directories there are in the file store which is all dependent on the number of files stored in total.
 
 Files are stored in leaf directories. Each directory is given a standardised name such that it is easy to find and infer the path to the leaf directories.
@@ -94,7 +94,7 @@ Such data stores are useful for a wide range of purposes. For instance, they can
 
 Although such a data store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the data store.
 
-### [IO_Utilities](https://github.com/agdturner/agdt-java-io/tree/master/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java)
+### [IO_Utilities](https://github.com/agdturner/agdt-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java)
 General input/output utility class for reading from files, writing to files, copying and moving files.
 
 ## Acknowledgements and thanks
