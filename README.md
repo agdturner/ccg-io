@@ -1,4 +1,4 @@
-# [agdt-java-io](https://github.com/agdturner/agdt-java-io)
+# [ccg-java-io](https://github.com/agdturner/agdt-java-io)
 A lightweight library offering a file based data store and some useful input/output utilities.
 [Modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) and dependent only on a small part of the [openJDK](https://openjdk.java.net/).
 The library provides 3 classes:
