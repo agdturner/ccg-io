@@ -28,16 +28,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link IO_Datastore} class.
+ * Tests for IO_Cache class.
  * 
  * @author Andy Turner
  * @version 1.0
  */
-public class IO_DatastoreTest {
+public class IO_CacheTest {
 
-    //Generic_Environment env;
-    //int logID;
-    public IO_DatastoreTest() {
+    public IO_CacheTest() {
     }
 
     @BeforeAll
@@ -78,7 +76,7 @@ public class IO_DatastoreTest {
             }
             // Load a new file store.
             short range = 10;
-            IO_Datastore a = new IO_Datastore(p, name, range);
+            IO_Cache a = new IO_Cache(p, name, range);
             // Add 1001 directories.
             for (long l = 0; l < 1001; l++) {
                 a.addDir();
@@ -86,7 +84,7 @@ public class IO_DatastoreTest {
             // Details of data store
             System.out.println(a.toString());
             // Reload the existing file store.
-            a = new IO_Datastore(p2);
+            a = new IO_Cache(p2);
             // Details of data store
             System.out.println(a.toString());
             /**
@@ -112,7 +110,7 @@ public class IO_DatastoreTest {
             IO_Utilities.delete(p, true);
     }
     /**
-     * Test of getLevels method, of class IO_Datastore.
+     * Test of getLevels method, of class IO_Cache.
      */
     @Test
     public void testGetLevels_long_long() {
@@ -120,48 +118,48 @@ public class IO_DatastoreTest {
         long n = 101L;
         long range = 10L;
         int expResult = 3;
-        int result = IO_Datastore.getLevels(n, range);
+        int result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
         // Test 2
         n = 1001L;
         range = 10L;
         expResult = 4;
-        result = IO_Datastore.getLevels(n, range);
+        result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
         // Test 3
         n = 10001L;
         range = 10L;
         expResult = 5;
-        result = IO_Datastore.getLevels(n, range);
+        result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
         // Test 4
         n = 100001L;
         range = 10L;
         expResult = 6;
-        result = IO_Datastore.getLevels(n, range);
+        result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
         // Test 5
         n = 100001L;
         range = 100L;
         expResult = 3;
-        result = IO_Datastore.getLevels(n, range);
+        result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
         // Test 6
         n = 10000001L;
         range = 100L;
         expResult = 4;
-        result = IO_Datastore.getLevels(n, range);
+        result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
         // Test 6
         n = 12345678910L;
         range = 34L;
         expResult = 7;
-        result = IO_Datastore.getLevels(n, range);
+        result = IO_Cache.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
     }
 
     /**
-     * Test of getRanges method, of class IO_Datastore.
+     * Test of getRanges method, of class IO_Cache.
      */
     @Test
     public void testGetRanges_long_long() throws Exception {
@@ -175,7 +173,7 @@ public class IO_DatastoreTest {
         expResult.add(10L);
         ArrayList<Long> result;
         try {
-            result = IO_Datastore.getRanges(n, range);
+            result = IO_Cache.getRanges(n, range);
             Assertions.assertArrayEquals(expResult.toArray(), result.toArray());
         } catch (Exception ex) {
             int debug = 1;
@@ -189,27 +187,27 @@ public class IO_DatastoreTest {
         expResult.add(1000L);
         expResult.add(100L);
         expResult.add(10L);
-        result = IO_Datastore.getRanges(n, range);
+        result = IO_Cache.getRanges(n, range);
         Assertions.assertArrayEquals(expResult.toArray(), result.toArray());
     }
 
     /**
-     * Test of getDirIndexes method, of class IO_Datastore.
+     * Test of getDirIndexes method, of class IO_Cache.
      */
     @Test
     public void testGetDirIndexes_3args() throws Exception {
         System.out.println("getDirIndexes");
         long id = 10001L;
         long range = 10L;
-        int levels = IO_Datastore.getLevels(id, range);;
-        ArrayList<Long> ranges = IO_Datastore.getRanges(id, range);
+        int levels = IO_Cache.getLevels(id, range);;
+        ArrayList<Long> ranges = IO_Cache.getRanges(id, range);
         ArrayList<Integer> expResult  = new ArrayList<>();
         expResult.add(0);
         expResult.add(1);
         expResult.add(10);
         expResult.add(100);
         expResult.add(1000);
-        ArrayList<Integer> result = IO_Datastore.getDirIndexes(id, levels, ranges);
+        ArrayList<Integer> result = IO_Cache.getDirIndexes(id, levels, ranges);
         Assertions.assertArrayEquals(expResult.toArray(), result.toArray());
     }
 }
