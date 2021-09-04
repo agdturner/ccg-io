@@ -1,22 +1,22 @@
-# [ccg-java-io](https://github.com/agdturner/ccg-java-io)
+# [ccg-java-io](https://github.com/agdturner/ccg-io)
 A lightweight library offering a file based data store and some useful input/output utilities.
 [Modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) and dependent only on a small part of the [openJDK](https://openjdk.java.net/).
 The library provides 3 classes:
-- [IO_Datastore](https://github.com/agdturner/ccg-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree. ([see below for a more detailed description](#IO_Datastore))
-- [IO_Utilities](https://github.com/agdturner/ccg-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
-- [IO_Path](https://github.com/agdturner/ccg-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
+- [IO_Datastore](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree. ([see below for a more detailed description](#IO_Datastore))
+- [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
+- [IO_Path](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
 
 ## Latest versioned release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
 ```
-<!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-io -->
+<!-- https://mvnrepository.com/artifact/io.github.agdturner/ccg-io -->
 <dependency>
     <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-io</artifactId>
+    <artifactId>ccg-io</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-java-io/0.1.0/ccg-java-io-0.1.0.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/0.1.0/ccg-java-io-0.1.0.jar)
 
 ## Development history
 ### Origin
@@ -27,8 +27,8 @@ This code was originally developed for an academic research project over a decad
 
 ## Details
 
-### [IO_Datastore](https://github.com/agdturner/ccg-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Datastore.java)
-For storing files in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree in a well organised (easy to retrieve) and extendable (easy to store more) way. Each file is stored in a leaf directory. Leaf directories are found at level 0 of the file store. The 1st leaf directory has the name 0, the 2nd leaf directory has the name 1, the nth leaf directory has the name n where n is a positive integer. A data store is comprised of a base directory in which there is a root directory. The root directory indicates how many files are stored in the data store using a range given in the directory name. The minimum of the range is 0 and the maximum is a positive integer number. These two numbers are separated by {@link #SEP} e.g. "0_99". The root directory will contain one or more subdirectories named in a similar style to the root directory e.g. "0_9". The maximum number will be less than or equal to that of the root directory. The range is a parameter that can be set when initialising a data store. It controls how many subdirectories there can be at each level, and ultimately this controls how many levels of directories there are in the file store which is all dependent on the number of files stored in total.
+### [IO_Cache](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Cache.java)
+For storing files in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree in a well organised (easy to retrieve) and extendable (easy to store more) [cache](https://en.wikipedia.org/wiki/Cache_(computing)). Each file is stored in a leaf directory. Leaf directories are found at level 0 of the file store. The 1st leaf directory has the name 0, the 2nd leaf directory has the name 1, the nth leaf directory has the name n where n is a positive integer. A data store is comprised of a base directory in which there is a root directory. The root directory indicates how many files are stored in the data store using a range given in the directory name. The minimum of the range is 0 and the maximum is a positive integer number. These two numbers are separated by {@link #SEP} e.g. "0_99". The root directory will contain one or more subdirectories named in a similar style to the root directory e.g. "0_9". The maximum number will be less than or equal to that of the root directory. The range is a parameter that can be set when initialising a data store. It controls how many subdirectories there can be at each level, and ultimately this controls how many levels of directories there are in the file store which is all dependent on the number of files stored in total.
 
 Files are stored in leaf directories. Each directory is given a standardised name such that it is easy to find and infer the path to the leaf directories.
 
@@ -91,7 +91,7 @@ Such data stores are useful for a wide range of purposes. For instance, they can
 
 Although such a data store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the data store.
 
-### [IO_Utilities](https://github.com/agdturner/ccg-java-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java)
+### [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java)
 General input/output utility class for reading from files, writing to files, copying and moving files.
 
 ## Acknowledgements and thanks
