@@ -6,17 +6,17 @@ The library provides 3 classes:
 - [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
 - [IO_Path](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
 
-## Latest versioned release
+## Latest release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/ccg-io -->
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>ccg-io</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/0.1.0/ccg-java-io-0.1.0.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/0.2.0/ccg-java-io-1.0.0.jar)
 
 ## Development history
 ### Origin
