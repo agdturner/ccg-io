@@ -16,7 +16,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
     <version>1.0.0</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/0.2.0/ccg-java-io-1.0.0.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/1.0.0/ccg-java-io-1.0.0.jar)
 
 ## Development history
 ### Origin
