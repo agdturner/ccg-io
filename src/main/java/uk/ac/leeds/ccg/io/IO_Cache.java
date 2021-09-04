@@ -29,34 +29,33 @@ import java.util.stream.Stream;
 //import uk.ac.leeds.ccg.generic.util.Generic_Collections;
 
 /**
- * For storing files on disk in file store - a form of data base where each file
- * is stored in a leaf directory. Leaf directories are found at level 0 of the
- * file store. The 1st leaf directory has the name 0, the 2nd leaf directory has
- * the name 1, the nth leaf directory has the name n where n is a positive
- * integer . A file store is comprised of a base directory in which there is a
- * root directory. The root directory indicates how many files are stored in the
- * file store using a range given in the directory name. The minimum of the
- * range is 0 and the maximum is a positive integer number. These two numbers
- * are separated with by {@link #SEP} e.g. "0_99". The root directory will
- * contain one or more subdirectories named in a similar style to the root
- * directory e.g. "0_9". The maximum number will be less than or equal to that
- * of the root directory. By comparing the range of numbers in the names of
- * directories in the root directory with the range of numbers in the names of
- * and subdirectory in the root directory it is possible to discern the range
- * for the file store. The range is a parameter that can be set when
- * initialising a file store. It controls how many subdirectories there can be
- * at each level, and ultimately this controls how many levels of directories
- * there are in the file store which is all dependent on the number of files
- * stored in the file store.
+ * For storing files on disk in cache - a form of data base where each file is
+ * stored in a leaf directory. Leaf directories are found at level 0 of the
+ * cache. The 1st leaf directory has the name 0, the 2nd leaf directory has the
+ * name 1, the nth leaf directory has the name n where n is a positive integer .
+ * A cache is comprised of a base directory in which there is a root directory.
+ * The root directory indicates how many files are stored in the cache using a
+ * range given in the directory name. The minimum of the range is 0 and the
+ * maximum is a positive integer number. These two numbers are separated with by
+ * {@link #SEP} e.g. "0_99". The root directory will contain one or more
+ * subdirectories named in a similar style to the root directory e.g. "0_9". The
+ * maximum number will be less than or equal to that of the root directory. By
+ * comparing the range of numbers in the names of directories in the root
+ * directory with the range of numbers in the names of and subdirectory in the
+ * root directory it is possible to discern the range for the cache. The range
+ * is a parameter that can be set when initialising a cache. It controls how
+ * many subdirectories there can be at each level, and ultimately this controls
+ * how many levels of directories there are in the cache which is all dependent
+ * on the number of files stored in the cache.
  *
  * Files are to be stored in the leaf directories. Each directory is given a
  * standardised name such that it is easy to find and infer the path to the leaf
  * directories.
  *
  * If range was set to 10, there would be at most 10 subdirectories in each
- * level of the file store.
+ * level of the cache.
  *
- * File stores are initialised with 3 levels and dynamically grow to store more
+ * Caches are initialised with 3 levels and dynamically grow to store more
  * files. For range = 10 the initial tree can be represented as follows:
  *
  * {@code
@@ -66,7 +65,7 @@ import java.util.stream.Stream;
  * 0        - 0_9         - 0_99
  * }
  *
- * For range = 10 and n = 100001 the tree can be represented as follows:
+ * For range = 10 and n = 100001 a tree representation is as follows:
  *
  * {@code
  * Level
@@ -113,15 +112,15 @@ import java.util.stream.Stream;
  * 100001
  * }
  *
- * File stores are used for logging and may be used to store other outputs from
+ * Caches are used for logging and may be used to store other outputs from
  * different runs of a program. They can also be used to organise caches of data
  * from a running program to help with memory management.
  *
- * Although such a file store can store many files, there are limits depending
- * on the range value set. The theoretical limit is close to Long.MAX_VALUE /
- * range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a
- * bigger restriction is the size of the storage element that holds the
- * directories and files indexed by the file store.
+ * Although such a cache can store many files, there are limits depending on the
+ * range value set. The theoretical limit is close to Long.MAX_VALUE / range.
+ * But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger
+ * restriction is the size of the storage element that holds the directories and
+ * files indexed by the cache.
  *
  * There is scope for developing something very similar that can store many more
  * files in the same way. This idea along with other related develop ideas are
@@ -138,13 +137,13 @@ import java.util.stream.Stream;
  * dependency albeit one using different versions (a form of recursive
  * enrichment). It might though be simpler to release this new class in another
  * library.</li>
- * <li>Add functionality for changing the range of a IO_Datastore.</li>
+ * <li>Add functionality for changing the range of a IO_Cache.</li>
  * </ul>
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
-public class IO_Datastore implements Serializable {
+public class IO_Cache implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -155,18 +154,18 @@ public class IO_Datastore implements Serializable {
     protected static final String SEP = "_";
 
     /**
-     * For storing the base directory path of the file store.
+     * For storing the base directory path of the cache.
      */
     protected final IO_Path baseDir;
 
     /**
-     * For storing the root directory path of the file store. This should be a
+     * For storing the root directory path of the cache. This should be a
      * directory in baseDir which is otherwise empty.
      */
     protected IO_Path root;
 
     /**
-     * The name of the file store. Used to initialise baseDir.
+     * The name of the cache. Used to initialise baseDir.
      */
     protected final String name;
 
@@ -186,30 +185,29 @@ public class IO_Datastore implements Serializable {
     protected long nextRange;
 
     /**
-     * Stores the number of levels in the file store. For a new store, initially
-     * this is 2 and increases by 1 each time the file store grows deeper. The
-     * maximum number of files that can be stored in 2 levels is range * range.
-     * With each subsequent level this number is increased by a factor of range.
-     * With n levels and range r
-     * {@code BigDecimal.valueOf(r).pow(n).longValueExact} files can be stored.
-     * So, with range = 100 and 3 levels some 10 thousand files can be stored.
-     * With range = 100 and 7 level some a million million files can be stored.
-     * To calculate how many levels will be needed for a given number of files n
-     * and a range r use {@link #getLevels(long, long)}.
+     * Stores the number of levels in the cache. For a new store, initially this
+     * is 2 and increases by 1 each time the cache grows deeper. The maximum
+     * number of files that can be stored in 2 levels is range * range. With
+     * each subsequent level this number is increased by a factor of range. With
+     * n levels and range r {@code BigDecimal.valueOf(r).pow(n).longValueExact}
+     * files can be stored. So, with range = 100 and 3 levels some 10 thousand
+     * files can be stored. With range = 100 and 7 level some a million million
+     * files can be stored. To calculate how many levels will be needed for a
+     * given number of files n and a range r use {@link #getLevels(long, long)}.
      */
     protected int levels;
 
     /**
      * For storing the range for each level above the root level. This grows
-     * with {@link #levels} as the file store grows. ranges[levels - 1] is
-     * rangeL, ranges[levels -2] is rangeL * rangeL, etc...
+     * with {@link #levels} as the cache grows. ranges[levels - 1] is rangeL,
+     * ranges[levels -2] is rangeL * rangeL, etc...
      */
     protected ArrayList<Long> ranges;
 
     /**
      * For storing the number of directories at each level from the root level
      * up to the level before the leaf level. This grows with {@link #levels} as
-     * the file store grows and is modified as new directories are added at each
+     * the cache grows and is modified as new directories are added at each
      * level. dirCounts[0] is a count of the number of directories at the
      * rootLevel which is always 1; dirCounts[1] is a count of the number of
      * directories at level 1; etc...
@@ -219,13 +217,13 @@ public class IO_Datastore implements Serializable {
     /**
      * For storing the paths to the directories (at each level including the
      * root level) in which nextID is to be stored. This grows with
-     * {@link #levels} as the file store grows. If the file store grows wider it
-     * also must be modified. lps[0] is the absolute path to the root directory;
-     * lps[1] is the path to the directory in lps[0] of the current highest
-     * leaf; each other lps[n] is either: the path to the directory containing
-     * the current highest leaf directory; or, it is another subdirectory in
-     * lps[n - 1] that contains it; etc... lps[levels - 1] is the parent of the
-     * Highest Leaf Directory.
+     * {@link #levels} as the cache grows. If the cache grows wider it also must
+     * be modified. lps[0] is the absolute path to the root directory; lps[1] is
+     * the path to the directory in lps[0] of the current highest leaf; each
+     * other lps[n] is either: the path to the directory containing the current
+     * highest leaf directory; or, it is another subdirectory in lps[n - 1] that
+     * contains it; etc... lps[levels - 1] is the parent of the Highest Leaf
+     * Directory.
      */
     protected IO_Path[] lps;
 
@@ -235,24 +233,24 @@ public class IO_Datastore implements Serializable {
     protected long nextID;
 
     /**
-     * Initialises a file store at {@code p} called {@code name} with 3 levels
+     * Initialises a cache at {@code p} called {@code name} with 3 levels
      * allowing to store 100 files in each directory.
      *
-     * @param p The path to where the file store will be initialised.
+     * @param p The path to where the cache will be initialised.
      * @param name The directory file name for the {@link #baseDir} of the file
      * store.
      * @throws IOException If encountered.
      */
-    public IO_Datastore(Path p, String name)
+    public IO_Cache(Path p, String name)
             throws IOException, Exception {
         this(p, name, (short) 100);
     }
 
     /**
-     * Initialises a file store at {@code p} called {@code name} with 3 levels
+     * Initialises a cache at {@code p} called {@code name} with 3 levels
      * allowing to store {@code range} number of files in each directory.
      *
-     * @param p The path to where the file store will be initialised.
+     * @param p The path to where the cache will be initialised.
      * @param name The directory file name for the {@link #baseDir} of the file
      * store.
      * @param range The maximum number of directories in each level of the file
@@ -260,7 +258,7 @@ public class IO_Datastore implements Serializable {
      * @throws IOException If encountered.
      * @throws Exception If range is less than 0.
      */
-    public IO_Datastore(Path p, String name, short range)
+    public IO_Cache(Path p, String name, short range)
             throws IOException, Exception {
         if (range < 0) {
             throw new Exception("Range cannot be < 0.");
@@ -293,36 +291,36 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * Initialises a file store at {@code p} for an existing file store.
+     * Initialises a cache at {@code p} for an existing cache.
      *
-     * @param p The path of the existing file store base directory.
+     * @param p The path of the existing cache base directory.
      * @throws IOException If encountered.
-     * @throws Exception If the existing file store is problematic.
+     * @throws Exception If the existing cache is problematic.
      */
-    public IO_Datastore(Path p) throws IOException, Exception {
+    public IO_Cache(Path p) throws IOException, Exception {
         name = p.getFileName().toString();
         baseDir = new IO_Path(p);
         if (!Files.isDirectory(baseDir.getPath())) {
             throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as it does not contain one element that "
+                    + "be a cache as it does not contain one element that "
                     + "is a directory.");
         }
         List<Path> l = IO_Utilities.getList(p);
         if (l.size() != 1) {
             throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as it does not contain one element.");
+                    + "be a cache as it does not contain one element.");
         }
         root = new IO_Path(l.get(0));
         String fn = root.getFileName().toString();
         if (!fn.contains(SEP)) {
             throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as the directory it contains does not "
+                    + "be a cache as the directory it contains does not "
                     + "have " + SEP + " in it's filename.");
         }
         String[] split = fn.split(SEP);
         if (!split[0].equalsIgnoreCase("0")) {
             throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as the name of the directory it contains"
+                    + "be a cache as the name of the directory it contains"
                     + " does not start with \"0\".");
         }
         if (split.length != 2) {
@@ -345,7 +343,7 @@ public class IO_Datastore implements Serializable {
             }
             long r2 = Long.valueOf(split[1]) - Long.valueOf(split[0]) + 1;
             if (r % r2 != 0) {
-                throw new Exception("Invalid range difference for file store.");
+                throw new Exception("Invalid range difference for cache.");
             }
             rangeL = r / r2;
         } catch (NumberFormatException ex) {
@@ -367,16 +365,15 @@ public class IO_Datastore implements Serializable {
     /**
      *
      * @param dir The FileStore directory.
-     * @return The file store at {@code dir} creating it first if it does not
-     * exist.
+     * @return The cache at {@code dir} creating it first if it does not exist.
      * @throws Exception If encountered.
      */
-    public static IO_Datastore getFileStore(Path dir) throws Exception {
-        IO_Datastore fs;
+    public static IO_Cache getFileStore(Path dir) throws Exception {
+        IO_Cache fs;
         if (Files.exists(dir)) {
-            fs = new IO_Datastore(dir);
+            fs = new IO_Cache(dir);
         } else {
-            fs = new IO_Datastore(dir.getParent(),
+            fs = new IO_Cache(dir.getParent(),
                     dir.getFileName().toString());
         }
         return fs;
@@ -417,16 +414,16 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * Calculates and returns the number of levels needed for a file store with
-     * range of {@code range} and {@code n} total number of files to store. If
-     * the result is larger than {@link Short#MAX_VALUE} then this would be too
+     * Calculates and returns the number of levels needed for a cache with range
+     * of {@code range} and {@code n} total number of files to store. If the
+     * result is larger than {@link Short#MAX_VALUE} then this would be too
      * deep. In such a case then it may still be possible to store all the files
      * but only if {@code range} is increased.
      *
      * @param n the number of files
-     * @param range the range of the file store
-     * @return the number of levels needed for an file store with range of r and
-     * n total number of files to store.
+     * @param range the range of the cache
+     * @return the number of levels needed for an cache with range of r and n
+     * total number of files to store.
      */
     public static int getLevels(long n, long range) {
         int r = 0;
@@ -444,14 +441,14 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * {@link #levels} is for storing the number of levels in the file store.
-     * This is kept up to date as the file store grows. This method is a
-     * convenience method for users that want to know how many levels will be
-     * needed once the number of files stored reaches n. This effectively calls
+     * {@link #levels} is for storing the number of levels in the cache. This is
+     * kept up to date as the cache grows. This method is a convenience method
+     * for users that want to know how many levels will be needed once the
+     * number of files stored reaches n. This effectively calls
      * {@link #getLevels(long, long)} defaulting range to rangeL.
      *
      * @param n The number of files.
-     * @return The number of levels needed for this file store to store n total
+     * @return The number of levels needed for this cache to store n total
      * number of files.
      */
     public int getLevels(long n) {
@@ -590,7 +587,7 @@ public class IO_Datastore implements Serializable {
 
     /**
      * @return a copy of {@link #lps}[levels] this is the current highest leaf
-     * directory of the file store.
+     * directory of the cache.
      */
     public IO_Path getPathNext() {
         return new IO_Path(Paths.get(lps[levels - 1].toString(),
@@ -625,20 +622,19 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * @param baseDir The baseDir of a file store for which the nextID is
-     * returned.
-     * @return The nextID of the file store with a baseDirectory baseDir.
+     * @param baseDir The baseDir of a cache for which the nextID is returned.
+     * @return The nextID of the cache with a baseDirectory baseDir.
      * @throws Exception If encountered
      */
     public static Long getNextID(IO_Path baseDir) throws Exception {
         if (baseDir == null) {
             return null;
         }
-        return new IO_Datastore(baseDir.getPath()).nextID;
+        return new IO_Cache(baseDir.getPath()).nextID;
     }
 
     /**
-     * @return The nextID of the file store with a base directory baseDir.
+     * @return The nextID of the cache with a base directory baseDir.
      * @throws Exception If encountered
      */
     public long getNextID() throws Exception {
@@ -699,12 +695,13 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * Adds a new directory to the file store for storing item identified by
+     * Adds a new directory to the cache for storing item identified by
      * {@link #nextID}.
      *
+     * @return Path of new directory added.
      * @throws IOException If encountered.
      */
-    public void addDir() throws IOException {
+    public Path addDir() throws IOException {
         nextID++;
         if (nextID % rangeL == 0) {
             // Grow
@@ -767,7 +764,7 @@ public class IO_Datastore implements Serializable {
         // Add to the currentDir
         Path p = Files.createDirectory(
                 Paths.get(lps[levels - 1].s, Long.toString(nextID)));
-        //System.out.println(p.toString());
+        return p;
     }
 
     /**
@@ -793,10 +790,10 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * Tests the integrity of the file store from its base directory.
+     * Tests the integrity of the cache from its base directory.
      *
      * @return true if the integrity seems fine.
-     * @throws java.io.IOException If the file store lacks integrity.
+     * @throws java.io.IOException If the cache lacks integrity.
      */
     public final boolean testIntegrity() throws IOException {
         try ( Stream<Path> paths = Files.walk(root.getPath())) {
@@ -838,7 +835,7 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * @return The highest leaf directory for an initialised file store.
+     * @return The highest leaf directory for an initialised cache.
      * @throws IOException If encountered.
      */
     public Path getHighestLeaf() throws IOException {
@@ -846,7 +843,7 @@ public class IO_Datastore implements Serializable {
     }
 
     /**
-     * @return The highest leaf directory for a non-initialised file store.
+     * @return The highest leaf directory for a non-initialised cache.
      * @throws IOException If encountered.
      */
     protected final Path findHighestLeaf() throws IOException {

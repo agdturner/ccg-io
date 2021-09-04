@@ -31,7 +31,7 @@ import java.util.Objects;
  * Serializable class for a {@link Path}.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0
  */
 public class IO_Path implements Serializable, Path {
 
