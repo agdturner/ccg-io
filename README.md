@@ -1,10 +1,10 @@
-# [ccg-java-io](https://github.com/agdturner/ccg-io)
-A lightweight library offering some useful input/output utilities including a cache.
-[Modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) and dependent only on a small part of the [openJDK](https://openjdk.java.net/).
-The library provides 3 classes:
+# [ccg-io](https://github.com/agdturner/ccg-io)
+A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) lightweight java library offering some input/output utilities including an effective way to cache data.
+The library provides 4 classes:
 - [IO_Cache](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Cache.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree [cache](https://en.wikipedia.org/wiki/Cache_(computing)). ([see below for a more detailed description](#IO_Cache))
 - [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
 - [IO_Path](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
+- [IO_Example](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/example/IO_Example.java) - an example showing how to cache data.
 
 ## Latest release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
@@ -89,7 +89,7 @@ Level
 
 Such data stores are useful for a wide range of purposes. For instance, they can be used to log informaton and cache data to help with memory management.
 
-Although such a data store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the data store.
+Although a cache can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element. One issue with this is that when the cache grows deeper, the paths to the data change and so care is needed not to read from or write to the cache when it is growing in this way. 
 
 ### [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java)
 General input/output utility class for reading from files, writing to files, copying and moving files.
