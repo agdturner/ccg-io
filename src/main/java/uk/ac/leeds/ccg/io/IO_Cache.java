@@ -614,6 +614,7 @@ public class IO_Cache implements Serializable {
             long l = range * dirIndexes.get(lvl + 1);
             //long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
+            //long u = l - 1L;
             paths[lvl] = Paths.get(p.toString(), getName(l, u));
             p = paths[lvl];
         }
@@ -675,7 +676,7 @@ public class IO_Cache implements Serializable {
      * @throws IOException If encountered.
      */
     public void add(Object o) throws IOException {
-        Path p = Paths.get(getHighestLeaf().toString(), name);
+        Path p = Paths.get(addDir().toString(), name);
         IO_Utilities.writeObject(o, p);
     }
 
@@ -701,7 +702,7 @@ public class IO_Cache implements Serializable {
      * @return Path of new directory added.
      * @throws IOException If encountered.
      */
-    public Path addDir() throws IOException {
+    protected Path addDir() throws IOException {
         nextID++;
         if (nextID % rangeL == 0) {
             // Grow

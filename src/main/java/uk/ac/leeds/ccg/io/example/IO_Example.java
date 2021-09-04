@@ -15,10 +15,51 @@
  */
 package uk.ac.leeds.ccg.io.example;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import uk.ac.leeds.ccg.io.IO_Cache;
+import uk.ac.leeds.ccg.io.IO_Utilities;
+
 /**
+ * Provides a simple example of how to use IO_Cache.
  *
  * @author Andy Turner
  */
 public class IO_Example {
-    
+
+    public static void main(String[] args) {
+        try {
+            Path p = Paths.get(System.getProperty("user.dir"), "data", "test");
+            // Create a new cache.
+            /**
+             * The range is the number of things to store in each directory.
+             */
+            short range = 100;
+            /**
+             * Give a name to the cache and the things stored in it. The class
+             * name for the objects stored is typical.
+             */
+            String name = "Integer";
+            IO_Cache c = new IO_Cache(p, name, range);
+            // The number of things to store.
+            int n = 10001;
+            //int n = 100001; // Quite a lot of things to list!
+            //int n = 1000001; // A lot of things to list!
+            for (int i = 0; i < n; i++) {
+                c.add(i);
+            }
+            // Print out the directory structure.
+            System.out.println(Files.list(p));
+            /**
+             * Delete the cache. (If the program stops before this or during
+             * this, then there will left over files that will probably want to
+             * be deleted somehow.
+             */
+            IO_Utilities.delete(p, true);
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
 }
