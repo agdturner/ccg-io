@@ -1,5 +1,5 @@
 # [ccg-java-io](https://github.com/agdturner/ccg-io)
-A lightweight library offering some useful input/output utilities includng a cache.
+A lightweight library offering some useful input/output utilities including a cache.
 [Modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) and dependent only on a small part of the [openJDK](https://openjdk.java.net/).
 The library provides 3 classes:
 - [IO_Cache](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Cache.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree [cache](https://en.wikipedia.org/wiki/Cache_(computing)). ([see below for a more detailed description](#IO_Cache))
