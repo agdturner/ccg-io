@@ -4,7 +4,6 @@ The library provides 4 classes:
 - [IO_Cache](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Cache.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree [cache](https://en.wikipedia.org/wiki/Cache_(computing)). ([see below for a more detailed description](#IO_Cache))
 - [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
 - [IO_Path](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
-- [IO_Example](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/example/IO_Example.java) - an example showing how to cache data.
 
 ## Latest release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
@@ -13,10 +12,15 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>ccg-io</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/1.0.1/ccg-java-io-1.0.1.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/1.1.0/ccg-java-io-1.1.0.jar)
+
+## Example use
+Please see [CacheCRUD_Example](https://github.com/agdturner/ccg-io-example/tree/main/src/main/java/uk/ac/leeds/ccg/example/io/CacheCRUD.java) - an example showing how to cache data. This shows how to create a cache, retrieve from the cache, update the cache, open a cache and delete a cache.
+
+Whilst the Unit Tests provides some clues about how to use the code, the above linked example is more user-friendly as it provides an example set up for using the library properly (in a way consistent with modularisation and maven).
 
 ## Development history
 ### Origin
