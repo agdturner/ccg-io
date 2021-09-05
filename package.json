@@ -1,0 +1,22 @@
+{
+  "name": "ccg-io",
+  "version": "1.0.1",
+  "description": "A lightweight cache and input/output utilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agdturner/ccg-io.git"
+  },
+  "keywords": [
+    "Java"
+  ],
+  "author": "Andy Turner",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/agdturner/ccg-io/issues"
+  },
+  "homepage": "https://github.com/agdturner/ccg-io#readme"
+}

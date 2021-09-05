@@ -47,7 +47,7 @@ public class IO_Example {
              * these in arrays or collections and store these larger objects in
              * the cache instead of individual items.
              */
-            String name = "Integer";
+            String name = "Long";
             IO_Cache c = new IO_Cache(p, name, range);
             /**
              * It is normal to also keep look-ups of the things we want to
