@@ -384,7 +384,8 @@ public class IO_Cache implements Serializable {
      */
     @Override
     public String toString() {
-        String r = "File store(baseDir=" + baseDir.s + ", root=" + root.s
+        String r = this.getClass().getSimpleName() + "(baseDir=" + baseDir.s
+                + ", root=" + root.s
                 + ", name=" + name + ", range=" + rangeBI.toString()
                 + ", nextRange=" + nextRange + ", levels=" + levels
                 + ", ranges=(length=" + ranges.size()
