@@ -37,7 +37,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.StreamTokenizer;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
@@ -66,8 +65,8 @@ public class IO_Utilities {
      * @param dir The path to traverse.
      * @return An ArrayList of the paths of all files in dir and any
      * subdirectories.
-     * @throws IOException If dir is not a directory and if otherwise
-     * encountered.
+     * @throws IOException If dir is not a directory and if otherwise such an
+     * Exception is encountered.
      */
     public static List<Path> getFiles(Path dir) throws IOException {
         if (Files.isDirectory(dir)) {
@@ -88,7 +87,7 @@ public class IO_Utilities {
      * @throws java.io.IOException If encountered.
      */
     protected static void addFiles(Path dir, List<Path> l) throws IOException {
-        try (DirectoryStream<Path> s = Files.newDirectoryStream(dir)) {
+        try ( DirectoryStream<Path> s = Files.newDirectoryStream(dir)) {
             for (Path p : s) {
                 if (Files.isDirectory(p)) {
                     addFiles(p, l);
@@ -107,8 +106,16 @@ public class IO_Utilities {
      * @throws IOException If encountered.
      */
     public static void writeObject(Object o, Path f) throws IOException {
-        //Files.createDirectories(f.getParent()); // Try to avoid this as it slows things down.
-        try (ObjectOutputStream oos = new ObjectOutputStream(
+        /**
+         * The following commented out line is left here in case it is thought
+         * in the future that it would be a good idea to add it. On the surface
+         * adding it may look like a good idea so as to prevent IOExceptions
+         * being thrown when the parent directory does not exist, but in
+         * practice it likely slows things down, and the user should ensure the
+         * directory exists before calling the method.
+         */
+        //Files.createDirectories(f.getParent());
+        try ( ObjectOutputStream oos = new ObjectOutputStream(
                 Files.newOutputStream(f, CREATE))) {
             oos.writeUnshared(o);
             oos.flush();
@@ -131,7 +138,7 @@ public class IO_Utilities {
             ClassNotFoundException {
         return (T) readObject(p);
     }
-    
+
     /**
      * Read an Object from a file at p.
      *
@@ -143,7 +150,7 @@ public class IO_Utilities {
      */
     public static Object readObject(Path p) throws IOException,
             ClassNotFoundException {
-        try (ObjectInputStream ois = new ObjectInputStream(
+        try ( ObjectInputStream ois = new ObjectInputStream(
                 Files.newInputStream(p, READ))) {
             return ois.readUnshared();
         }
@@ -158,7 +165,8 @@ public class IO_Utilities {
      * @param name String for reporting.
      * @throws java.io.IOException If encountered.
      */
-    public static void writeObject(Object o, Path p, String name) throws IOException {
+    public static void writeObject(Object o, Path p, String name)
+            throws IOException {
         writeObject(o, p);
     }
 
@@ -197,8 +205,7 @@ public class IO_Utilities {
         if (!Files.exists(p)) {
             Files.createFile(p);
         }
-        try (BufferedInputStream bis = getBufferedInputStream(f);
-                BufferedOutputStream bos = getBufferedOutputStream(p)) {
+        try ( BufferedInputStream bis = getBufferedInputStream(f);  BufferedOutputStream bos = getBufferedOutputStream(p)) {
             /**
              * bufferSize should be power of 2 (e.g. Math.pow(2, 12)), but
              * nothing too big.
@@ -231,59 +238,6 @@ public class IO_Utilities {
         return new BufferedInputStream(Files.newInputStream(f, READ));
     }
 
-//    /**
-//     * @param f File.
-//     * @return FileInputStream
-//     * @throws java.io.FileNotFoundException If the file exists but is a
-//     * directory rather than a regular file, does not exist but cannot be
-//     * created, or cannot be opened for any other reason.
-//     */
-//    public FileInputStream getFileInputStream(Path f) throws FileNotFoundException {
-//        FileInputStream r = null;
-//        try {
-//            r = new FileInputStream(f.toFile());
-//        } catch (FileNotFoundException ex) {
-//            if (Files.exists(f)) {
-//                long wait = 2000L;
-//                fileWait(wait, f);
-//                return getFileInputStream(f, wait);
-//            } else {
-//                throw ex;
-//            }
-//        }
-//        return r;
-//    }
-//
-//    protected void fileWait(long wait, Object o) {
-//        env.log("Maybe there are too many open files... "
-//                + "waiting for " + wait + " milliseconds...");
-//        Generic_Execution.waitSychronized(env, o, wait);
-//    }
-//
-//    /**
-//     * @param f File.
-//     * @param wait Time in milliseconds to wait before trying to open the
-//     * FileInputStream again if it failed the first time (this may happen if
-//     * waiting for a file to be written).
-//     * @return FileInputStream
-//     * @throws java.io.FileNotFoundException If the file exists but is a
-//     * directory rather than a regular file, does not exist but cannot be
-//     * created, or cannot be opened for any other reason.
-//     */
-//    public FileInputStream getFileInputStream(Path f, long wait)
-//            throws FileNotFoundException {
-//        new FileInputStream();
-//        try {
-//            return new FileInputStream(f.toFile());
-//        } catch (FileNotFoundException ex) {
-//            if (Files.exists(f)) {
-//                fileWait(wait, f);
-//                return getFileInputStream(f, wait * 2L);
-//            } else {
-//                throw ex;
-//            }
-//        }
-//    }
     /**
      * For getting a {@link BufferedOutputStream} to write to a file at
      * {@code f}.
@@ -319,7 +273,8 @@ public class IO_Utilities {
      * @return An {@link ObjectInputStream} for reading from a file at {@code f}
      * @throws java.io.IOException If encountered and not otherwise handled.
      */
-    public static ObjectInputStream getObjectInputStream(Path f) throws IOException {
+    public static ObjectInputStream getObjectInputStream(Path f)
+            throws IOException {
         return new ObjectInputStream(getBufferedInputStream(f));
     }
 
@@ -328,7 +283,8 @@ public class IO_Utilities {
      * @return An {@link ObjectOutputStream} for writing to a file at {@code f}.
      * @throws java.io.IOException If encountered and not handled.
      */
-    public static ObjectOutputStream getObjectOutputStream(Path f) throws IOException {
+    public static ObjectOutputStream getObjectOutputStream(Path f)
+            throws IOException {
         return new ObjectOutputStream(getBufferedOutputStream(f));
     }
 
@@ -370,7 +326,7 @@ public class IO_Utilities {
 
     }
 
-    private static void copyDirectory(Path dirToCopy, Path dirToCopyTo) 
+    private static void copyDirectory(Path dirToCopy, Path dirToCopyTo)
             throws IOException {
         Files.walkFileTree(dirToCopy, new CopyDir(dirToCopy, dirToCopyTo));
     }
@@ -380,7 +336,8 @@ public class IO_Utilities {
      * @param dirToCopyTo Directory.
      * @throws java.io.IOException If IOException encountered.
      */
-    public static void copy(Path fileOrDirToCopy, Path dirToCopyTo) throws IOException {
+    public static void copy(Path fileOrDirToCopy, Path dirToCopyTo)
+            throws IOException {
         Files.createDirectories(dirToCopyTo);
         if (!Files.isDirectory(dirToCopyTo)) {
             throw new IOException("Expecting File " + dirToCopyTo
@@ -398,12 +355,12 @@ public class IO_Utilities {
      *
      * @param d The directory containing everything to delete.
      * @param log If true then deletions are logged.
-     * @throws java.io.IOException If encountered and not logged. This will be 
+     * @throws java.io.IOException If encountered and not logged. This will be
      * thrown if d does not denote a path to an existing directory.
      */
     public static void delete(Path d, boolean log) throws IOException {
         if (log) {
-            try (Stream<Path> walk = Files.walk(d)) {
+            try ( Stream<Path> walk = Files.walk(d)) {
                 walk.sorted(Comparator.reverseOrder())
                         .peek(System.out::println) // Log deletions to std.out.
                         .forEach(p -> {
@@ -411,7 +368,7 @@ public class IO_Utilities {
                         });
             }
         } else {
-            try (Stream<Path> walk = Files.walk(d)) {
+            try ( Stream<Path> walk = Files.walk(d)) {
                 walk.sorted(Comparator.reverseOrder())
                         .forEach(p -> {
                             delete(p);
@@ -419,7 +376,7 @@ public class IO_Utilities {
             }
         }
     }
-    
+
     /**
      * Delete file if it exists.
      *
@@ -429,10 +386,10 @@ public class IO_Utilities {
         try {
             Files.deleteIfExists(p);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
         }
     }
-    
+
     /**
      * @param p The IO_Path of a file.
      * @return BufferedReader
@@ -448,9 +405,11 @@ public class IO_Utilities {
     /**
      * @param f The Path of a file.
      * @return BufferedReader
-     * @throws java.io.FileNotFoundException If the file exists but is a
-     * directory rather than a regular file, does not exist but cannot be
-     * created, or cannot be opened for any other reason.
+     * @throws java.io.FileNotFoundException If the path f does not end at a
+     * file or a directory.
+     * @throws java.io.IOException If the path f ends at a directory rather than
+     * a regular file, or if the path f ends at a file, but this cannot be
+     * opened for some reason.
      */
     public static BufferedReader getBufferedReader(Path f)
             throws FileNotFoundException, IOException {
@@ -472,41 +431,6 @@ public class IO_Utilities {
                 Files.newInputStream(f, READ), charsetName));
     }
 
-//    /**
-//     * Deprecated as should use try with resource.
-//     * Closes BufferedReader br.
-//     *
-//     * @param br BufferedReader
-//     */
-//    @Deprecated
-//    public void closeBufferedReader(BufferedReader br) {
-//        try {
-//            br.close();
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
-//        }
-//    }
-//
-//    /**
-//     * Deprecated as should use try with resource.
-//     * Closes BufferedReader br and returns a new BufferedReader to read f.
-//     *
-//     * @param br BufferedReader
-//     * @param f File
-//     * @return new BufferedReader to read f.
-//     * @throws FileNotFoundException If the file exists but is a directory
-//     * rather than a regular file, does not exist but cannot be created, or
-//     * cannot be opened for any other reason.
-//     */
-//    @Deprecated
-//    public static BufferedReader closeAndGetBufferedReader(BufferedReader br, Path f)
-//            throws FileNotFoundException, IOException {
-//        br.close();
-//        br = getBufferedReader(f);
-//        return br;
-//    }
-
     /**
      * Write {@code s} to a file at {@code p}.
      *
@@ -517,7 +441,7 @@ public class IO_Utilities {
     public static void write(Path p, String s) throws IOException {
         // Convert the string to a  byte array.
         byte data[] = s.getBytes();
-        try (OutputStream out = new BufferedOutputStream(
+        try ( OutputStream out = new BufferedOutputStream(
                 Files.newOutputStream(p, CREATE, APPEND))) {
             out.write(data, 0, data.length);
         }
@@ -540,443 +464,19 @@ public class IO_Utilities {
         } else {
             return new PrintWriter(Files.newBufferedWriter(f, WRITE, CREATE));
         }
-//        try {
-//            return new PrintWriter(new BufferedWriter(f, append));
-//        } catch (FileNotFoundException ex) {
-//            if (Files.exists(f)) {
-//                long wait = 2000L;
-//                fileWait(wait, f);
-//                return getPrintWriter(f, append, wait);
-//            } else {
-//                throw ex;
-//            }
-//        }
     }
 
-//    /**
-//     * @param f The File to write to.
-//     * @param append If true an existing file will be appended otherwise it will
-//     * be overwritten.
-//     * @param wait Time in milliseconds to wait before trying to open the
-//     * FileInputStream again if it failed the first time (this may happen if
-//     * waiting for a file to be written).
-//     * @return PrintWriter
-//     * @throws IOException If the file exists but is a directory rather than a
-//     * regular file, does not exist but cannot be created, or cannot be opened
-//     * for any other reason.
-//     */
-//    public PrintWriter getPrintWriter(Path f, boolean append, long wait)
-//            throws IOException {
-//        try {
-//            return new PrintWriter(new BufferedWriter(new FileWriter(
-//                    f.toFile(), append)));
-//        } catch (FileNotFoundException ex) {
-//            if (Files.exists(f)) {
-//                fileWait(wait, f);
-//                return getPrintWriter(f, append, wait * 2L);
-//            } else {
-//                throw ex;
-//            }
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param depth int
-//     * @return String
-//     */
-//    public String getRelativeFilePath(int depth) {
-//        String r = "";
-//        for (int i = 0; i < depth; i++) {
-//            r += "../";
-//        }
-//        return r;
-//    }
-//
-//    /**
-//     * @param depth int.
-//     * @param f File.
-//     * @return f.getPath() appended with depth number of "../"
-//     */
-//    public String getRelativeFilePath(int depth, Path f) {
-//        return getRelativeFilePath(depth, f.toString());
-//    }
-//
-//    /**
-//     * @param depth int.
-//     * @param path String.
-//     * @return path appended with depth number of "../"
-//     */
-//    public String getRelativeFilePath(int depth, String path) {
-//        String r = path;
-//        for (int i = 0; i < depth; i++) {
-//            r += "../";
-//        }
-//        return r;
-//    }
-//
-//    /**
-//     * Skips to the next token of StreamTokenizer.TT_EOL type in st.nextToken().
-//     *
-//     * @param st StreamTokenizer
-//     * @throws java.io.IOException If IOException encountered.
-//     */
-//    public void skipline(StreamTokenizer st) throws IOException {
-//        int token = st.nextToken();
-//        while (token != StreamTokenizer.TT_EOL) {
-//            token = st.nextToken();
-//        }
-//    }
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.wordChars( '0', '0' );</li>
-     * <li>st.wordChars( '1', '1' );</li>
-     * <li>st.wordChars( '2', '2' );</li>
-     * <li>st.wordChars( '3', '3' );</li>
-     * <li>st.wordChars( '4', '4' );</li>
-     * <li>st.wordChars( '5', '5' );</li>
-     * <li>st.wordChars( '6', '6' );</li>
-     * <li>st.wordChars( '7', '7' );</li>
-     * <li>st.wordChars( '8', '8' );</li>
-     * <li>st.wordChars( '9', '9' );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> that has syntax set.
-     */
-    public static void setStreamTokenizerSyntaxNumbersAsWords1(
-            StreamTokenizer st) {
-        // st.wordChars( '0', '9' );
-        st.wordChars('0', '0');
-        st.wordChars('1', '1');
-        st.wordChars('2', '2');
-        st.wordChars('3', '3');
-        st.wordChars('4', '4');
-        st.wordChars('5', '5');
-        st.wordChars('6', '6');
-        st.wordChars('7', '7');
-        st.wordChars('8', '8');
-        st.wordChars('9', '9');
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars( ',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.eolIsSignificant( true );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set.
-     */
-    public static void setStreamTokenizerSyntax1(StreamTokenizer st) {
-        st.resetSyntax();
-        // st.parseNumbers();
-        st.wordChars(',', ',');
-        st.wordChars('"', '"');
-        // st.whitespaceChars( '"', '"' );
-        setStreamTokenizerSyntaxNumbersAsWords1(st);
-        st.wordChars('.', '.');
-        st.wordChars('-', '-');
-        st.wordChars('_', '_');
-        st.wordChars('+', '+');
-        st.wordChars('a', 'z');
-        st.wordChars('A', 'Z');
-        // char[] tab = new char[1];
-        // tab[0] = '\t';
-        setWhitespaceAsWords(st);
-        // st.ordinaryChar( ' ' );
-        st.eolIsSignificant(true);
-    }
-
-    /**
-     * @param st The StreamTokenizer to modify.
-     */
-    private static void setWhitespaceAsWords(StreamTokenizer st) {
-        st.wordChars('\t', '\t');
-        st.wordChars(' ', ' ');
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'e', 'e' );</li>
-     * <li>st.wordChars( 'E', 'E' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.eolIsSignificant( true );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set
-     */
-    public static void setStreamTokenizerSyntax2(StreamTokenizer st) {
-        st.resetSyntax();
-        st.wordChars('"', '"');
-        setStreamTokenizerSyntaxNumbersAsWords1(st);
-        st.wordChars('.', '.');
-        st.wordChars('-', '-');
-        st.wordChars('+', '+');
-        st.wordChars('e', 'e');
-        st.wordChars('E', 'E');
-        setWhitespaceAsWords(st);
-        st.eolIsSignificant(true);
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars( ',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.wordChars( '_', '_' );</li>
-     * <li>st.eolIsSignificant( true );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set
-     */
-    public static void setStreamTokenizerSyntax3(StreamTokenizer st) {
-        st.resetSyntax();
-        // st.parseNumbers();
-        st.wordChars(',', ',');
-        st.wordChars('"', '"');
-        // st.whitespaceChars( '"', '"' );
-        setStreamTokenizerSyntaxNumbersAsWords1(st);
-        st.wordChars('.', '.');
-        st.wordChars('-', '-');
-        st.wordChars('+', '+');
-        st.wordChars('a', 'z');
-        st.wordChars('A', 'Z');
-        // char[] tab = new char[1];
-        // tab[0] = '\t';
-        setWhitespaceAsWords(st);
-        st.wordChars('_', '_');
-        // st.ordinaryChar( ' ' );
-        st.eolIsSignificant(true);
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars( ',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.eolIsSignificant( true );</li> </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set
-     */
-    public static void setStreamTokenizerSyntax4(StreamTokenizer st) {
-        st.resetSyntax();
-        st.wordChars(',', ',');
-        st.wordChars('"', '"');
-        setStreamTokenizerSyntaxNumbersAsWords1(st);
-        st.wordChars('.', '.');
-        st.wordChars('-', '-');
-        st.wordChars('+', '+');
-        st.wordChars('a', 'z');
-        st.wordChars('A', 'Z');
-        st.eolIsSignificant(true);
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars(',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.wordChars( ':', ':' );</li>
-     * <li>st.wordChars( '/', '/' );</li>
-     * <li>st.wordChars( '_', '_' );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set
-     */
-    public static void setStreamTokenizerSyntax5(StreamTokenizer st) {
-        st.resetSyntax();
-        // st.parseNumbers();
-        st.wordChars(',', ',');
-        //st.ordinaryChar(',');
-        st.wordChars('"', '"');
-        // st.whitespaceChars( '"', '"' );
-        setStreamTokenizerSyntaxNumbersAsWords1(st);
-        st.wordChars('.', '.');
-        st.wordChars('-', '-');
-        st.wordChars('+', '+');
-        st.wordChars('a', 'z');
-        st.wordChars('A', 'Z');
-        // char[] tab = new char[1];
-        // tab[0] = '\t';
-        setWhitespaceAsWords(st);
-        st.wordChars(':', ':');
-        st.wordChars('/', '/');
-        st.wordChars('_', '_');
-        // st.ordinaryChar( ' ' );
-        st.eolIsSignificant(true);
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars(',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.wordChars( ':', ':' );</li>
-     * <li>st.wordChars( '/', '/' );</li>
-     * <li>st.wordChars( '_', '_' );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set
-     */
-    public static void setStreamTokenizerSyntax6(StreamTokenizer st) {
-        setStreamTokenizerSyntax5(st);
-        st.wordChars('&', '&');
-        st.wordChars('(', '(');
-        st.wordChars(')', ')');
-        st.wordChars('?', '?');
-        st.wordChars('\'', '\'');
-        st.wordChars('*', '*');
-        st.wordChars('\\', '\\');
-        st.wordChars('/', '/');
-        st.wordChars(';', ';');
-        st.wordChars('%', '%');
-        st.wordChars('"', '"');
-        st.wordChars('£', '£');
-        st.wordChars('|', '|');
-        st.wordChars('@', '@');
-        st.wordChars('=', '=');
-        //st.wordChars('', '');
-    }
-
-    /**
-     * Sets the syntax of st as follows:
-     * <pre>{@code
-     * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars(',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
-     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.wordChars( ':', ':' );</li>
-     * <li>st.wordChars( '/', '/' );</li>
-     * <li>st.wordChars( '_', '_' );</li>
-     * </ul>
-     * }</pre>
-     *
-     * @param st <code>StreamTokenizer</code> thats syntax is set
-     */
-    public static void setStreamTokenizerSyntax7(StreamTokenizer st) {
-        setStreamTokenizerSyntax6(st);
-        st.wordChars('<', '<');
-        st.wordChars('>', '>');
-    }
-
-    /**
-     * @param st <code>StreamTokenizer</code> that's syntax is set
-     */
-    public static void setStreamTokenizerSyntax8(StreamTokenizer st) {
-        setStreamTokenizerSyntax7(st);
-        st.wordChars('[', '[');
-        st.wordChars(']', ']');
-    }
-    
     /**
      * @param dir The directory to list.
      * @return A list of files and directories in dir.
      * @throws IOException If encountered.
      */
     public static List<Path> getList(Path dir) throws IOException {
-        try (Stream<Path> s = Files.list(dir)) {
+        try ( Stream<Path> s = Files.list(dir)) {
             return s.collect(Collectors.toList());
         }
     }
 
-//    /**
-//     * @param dir File.
-//     * @param f File.
-//     * @return The name of the file or directory in dir in the path of f.
-//     */
-//    public String getFilename(Path dir, Path f) {
-//        int beginIndex = dir.normalize().toString().length() + 1;
-//        String fileSeparator = System.getProperty("file.separator");
-//        /*
-//         * A feature in Java means splitting strings with "\" does not work as
-//         * might be expected and the regexp needs changing to "\\\\"
-//         */
-//        String regexp = "\\";
-//        //System.out.println("regexp " + regexp);
-//        if (fileSeparator.equals(regexp)) {
-//            fileSeparator = "\\\\";
-//        }
-//        //System.out.println("fileSeparator " + fileSeparator);
-//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getAbsolutePath().substring(beginIndex)).split(System.getProperty("file.separator"))[0];
-//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("\\")[0];
-//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("/")[0];
-//        return (f.toString().substring(beginIndex)).split(fileSeparator)[0];
-//    }
     /**
      * Method to calculate the length of the file path.
      *
@@ -988,7 +488,7 @@ public class IO_Utilities {
         String s = f.normalize().toString();
         return s.length();
     }
-    
+
     /**
      * Returns a newly created File in the directory dir.
      *
@@ -1038,9 +538,9 @@ public class IO_Utilities {
             String methodName = IO_Utilities.class.getName()
                     + ".createNewFile(Path,String,String)";
             if (r != null) {
-                System.out.println("Path " + r.toString() + " in " + methodName);
+                System.err.println("Path " + r.toString() + " in " + methodName);
             } else {
-                System.out.println("Path null in " + methodName);
+                System.err.println("Path null in " + methodName);
             }
             ioe0.printStackTrace(System.err);
         }
@@ -1048,12 +548,12 @@ public class IO_Utilities {
     }
 
     /**
-     * This attempts to return a new file in the directory {@code dir}. The file
-     * will have a name starting {@code prefix} and ending {@code suffix}. If
-     * such a file already exists then a n is inserted between the
-     * {@code prefix} and {@code suffix}, where n is a positive long. Firstly n
-     * = 0 is tried and if this file already exists then n = 1 is tried and so
-     * on until a unique file is returned.
+     * This attempts to return a Path to a new file in the directory
+     * {@code dir}. The file will have a name starting {@code prefix} and ending
+     * {@code suffix}. If such a file already exists then a number n is inserted
+     * between the {@code prefix} and {@code suffix}, where n is a positive
+     * long. Firstly n = 0 is tried and if this file already exists then n = 1
+     * is tried and so on until a unique file is returned.
      *
      * @param dir The directory in which to return the File.
      * @param prefix The first part of the filename.
