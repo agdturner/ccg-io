@@ -55,8 +55,7 @@ public class IO_CacheTest {
     }
 
     /**
-     * Test creating a new file store adding to it and creating another file store 
-     * based on the existing directory and adding to that.
+     * Test creating a new IO_Cache adding to it and creating another IO_Cache
      */
     @Test
     public void testFileStore1() throws IOException, Exception {
