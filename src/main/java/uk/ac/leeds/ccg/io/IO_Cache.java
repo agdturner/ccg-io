@@ -609,7 +609,8 @@ public class IO_Cache implements Serializable {
         Path[] paths = new Path[levels - 1];
         ArrayList<Integer> dirIndexes = getDirIndexes(id);
         Path p = root;
-        for (int lvl = levels - 2; lvl >= 0; lvl--) {
+//        for (int lvl = levels - 2; lvl >= 0; lvl--) {
+        for (int lvl = 0; lvl <= levels - 2; lvl++) {
             long range = ranges.get(lvl + 1);
             long l = range * dirIndexes.get(lvl + 1);
             //long l = range * dirIndexes.get(lvl);
