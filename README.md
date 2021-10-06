@@ -18,7 +18,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 [JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/1.1.0/ccg-java-io-1.1.0.jar)
 
 ## Example use
-Please see [CacheCRUD_Example](https://github.com/agdturner/ccg-io-example/tree/main/src/main/java/uk/ac/leeds/ccg/example/io/CacheCRUD.java) - an example showing how to cache data. This shows how to create a cache, retrieve from the cache, update the cache, open a cache and delete a cache.
+[https://github.com/agdturner/ccg-io-example](A Mavenised repository with example use of ccg-io) - this initialises a cache and then goes through a sequence of CRUD (Create, Read, Update, Delete) operations to modify the cache). The [pom.xml](https://github.com/agdturner/ccg-io-example/tree/pom.xml) provides what is needed for Maven. The main method is in [CacheCRUD.java](https://github.com/agdturner/ccg-io-example/tree/main/src/main/java/uk/ac/leeds/ccg/example/io/CacheCRUD.java).
 
 Whilst the Unit Tests provides some clues about how to use the code, the above linked example is more user-friendly as it provides an example set up for using the library properly (in a way consistent with modularisation and maven).
 
