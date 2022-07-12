@@ -24,7 +24,7 @@ Whilst the Unit Tests provides some clues about how to use the code, the above l
 
 ## Development history
 ### Origin
-This code was originally developed for an academic research project over a decade before it was migrated here from [agdt-java-generic](https://github.com/agdturner/agdt-generic) in September 2021 as part of a major code reorganisation.
+This code was originally developed for an academic research project over a decade before it was migrated here from [ccg-generic](https://github.com/agdturner/ccg-generic) in September 2021 as part of a major code reorganisation.
 
 ## LICENSE
 - [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
