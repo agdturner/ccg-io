@@ -1,12 +1,12 @@
 # [ccg-io](https://github.com/agdturner/ccg-io)
 A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) lightweight java library offering some input/output utilities including an effective way to cache data.
-The library provides 4 classes:
+The library contains:
 - [IO_Cache](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Cache.java) - for storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system) directory tree [cache](https://en.wikipedia.org/wiki/Cache_(computing)). ([see below for a more detailed description](#IO_Cache))
 - [IO_Utilities](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Utilities.java) - containing static methods useful for input and output.
 - [IO_Path](https://github.com/agdturner/ccg-io/tree/main/src/main/java/uk/ac/leeds/ccg/io/IO_Path.java) - a simple wrapper for java.nio.file.Path so that instances can be serialized.
 
 ## Latest release
-Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
+Developed and tested on [Java Development Kit, version 17](https://openjdk.java.net/projects/jdk/17/).
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/ccg-io -->
 <dependency>
@@ -15,7 +15,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
     <version>1.1.0</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/1.1.0/ccg-java-io-1.1.0.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/ccg-io/1.1.1/ccg-java-io-1.1.1.jar)
 
 ## Example use
 [A Mavenised repository with example use of ccg-io](https://github.com/agdturner/ccg-io-example) - this initialises a cache and then goes through a sequence of CRUD (Create, Read, Update, Delete) operations to modify the cache). The [pom.xml](https://github.com/agdturner/ccg-io-example/blob/main/pom.xml) provides what is needed for Maven. The main method is in [CacheCRUD.java](https://github.com/agdturner/ccg-io-example/tree/main/src/main/java/uk/ac/leeds/ccg/example/io/CacheCRUD.java).
