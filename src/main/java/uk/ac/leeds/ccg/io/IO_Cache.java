@@ -233,6 +233,16 @@ public class IO_Cache implements Serializable {
     protected long nextID;
 
     /**
+     * Create a new instance.
+     */
+    protected IO_Cache(){
+        baseDir = new IO_Path(Paths.get(System.getProperty("user.dir")));
+        name = "io_cache";
+        rangeL = 100l;
+        rangeBI = BigInteger.valueOf(rangeL);
+    }
+    
+    /**
      * Initialises a cache at {@code p} called {@code name} with 3 levels
      * allowing to store 100 files in each directory.
      *
@@ -241,8 +251,7 @@ public class IO_Cache implements Serializable {
      * store.
      * @throws IOException If encountered.
      */
-    public IO_Cache(Path p, String name)
-            throws IOException, Exception {
+    public IO_Cache(Path p, String name) throws Exception {
         this(p, name, (short) 100);
     }
 
@@ -258,8 +267,7 @@ public class IO_Cache implements Serializable {
      * @throws IOException If encountered.
      * @throws Exception If range is less than 0.
      */
-    public IO_Cache(Path p, String name, short range)
-            throws IOException, Exception {
+    public IO_Cache(Path p, String name, short range) throws Exception {
         if (range < 0) {
             throw new Exception("Range cannot be < 0.");
         }
@@ -297,7 +305,7 @@ public class IO_Cache implements Serializable {
      * @throws IOException If encountered.
      * @throws Exception If the existing cache is problematic.
      */
-    public IO_Cache(Path p) throws IOException, Exception {
+    public IO_Cache(Path p) throws Exception {
         name = p.getFileName().toString();
         baseDir = new IO_Path(p);
         if (!Files.isDirectory(baseDir.getPath())) {
@@ -329,7 +337,7 @@ public class IO_Cache implements Serializable {
         }
         try {
             long r;
-            r = Long.valueOf(split[1]) + 1L;
+            r = Long.parseLong(split[1]) + 1L;
             Path p2 = IO_Utilities.getList(root.getPath()).get(0);
             fn = p2.getFileName().toString();
             if (!fn.contains(SEP)) {
@@ -464,7 +472,7 @@ public class IO_Cache implements Serializable {
      */
     protected final void initLevelsAndNextID() throws IOException {
         Path p = findHighestLeaf();
-        nextID = Long.valueOf(p.getFileName().toString());
+        nextID = Long.parseLong(p.getFileName().toString());
         levels = p.getNameCount() - baseDir.getNameCount() - 1;
     }
 

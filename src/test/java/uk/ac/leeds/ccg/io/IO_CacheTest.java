@@ -29,13 +29,16 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for IO_Cache class.
- * 
+ *
  * @author Andy Turner
  * @version 1.0
  */
 public class IO_CacheTest {
 
+    private static final long serialVersionUID = 1L;
+
     public IO_CacheTest() {
+        super();
     }
 
     @BeforeAll
@@ -60,54 +63,55 @@ public class IO_CacheTest {
     @Test
     public void testFileStore1() throws IOException, Exception {
         //try {
-            System.out.println("testFileStore1");
-            // Set the path.
-            Path p = Paths.get(System.getProperty("user.dir"), "data");
-            // Set the name for the file store which should be unique and not used 
-            // by any other tests which are executed in parallel.
-            String name = "test2";
-            Path p2 = Paths.get(p.toString(), name);
-            // Delete any existing file store.
-            if (true) {
-                if (Files.exists(p2)) {
-                    IO_Utilities.delete(p2, false);
-                }
+        System.out.println("testFileStore1");
+        // Set the path.
+        Path p = Paths.get(System.getProperty("user.dir"), "data");
+        // Set the name for the file store which should be unique and not used 
+        // by any other tests which are executed in parallel.
+        String pname = "test2";
+        Path p2 = Paths.get(p.toString(), pname);
+        // Delete any existing file store.
+        if (true) {
+            if (Files.exists(p2)) {
+                IO_Utilities.delete(p2, false);
             }
-            // Load a new file store.
-            short range = 10;
-            IO_Cache a = new IO_Cache(p, name, range);
-            // Add 1001 directories.
-            for (long l = 0; l < 1001; l++) {
-                a.addDir();
+        }
+        // Load a new file store.
+        short range = 10;
+        IO_Cache a = new IO_Cache(p, pname, range);
+        // Add 1001 directories.
+        for (long l = 0; l < 1001; l++) {
+            a.addDir();
+        }
+        // Details of data store
+        System.out.println(a.toString());
+        // Reload the existing file store.
+        a = new IO_Cache(p2, pname, range);
+        // Details of data store
+        System.out.println(a.toString());
+        /**
+         * If there are two file stores with the same baseDir then if one of
+         * them changes the file store structure the other will have nextID,
+         * lps, ranges and dirCounts that are inconsistent with what is actually
+         * stored in the file system.
+         */
+        // Add another 1001 directories.
+        for (long l = 0; l < 1001; l++) {
+            a.addDir();
+        }
+        // Delete the file store.
+        if (true) {
+            if (Files.exists(p2)) {
+                IO_Utilities.delete(p2, false);
             }
-            // Details of data store
-            System.out.println(a.toString());
-            // Reload the existing file store.
-            a = new IO_Cache(p2);
-            // Details of data store
-            System.out.println(a.toString());
-            /**
-             * If there are two file stores with the same baseDir then if one of
-             * them changes the file store structure the other will have nextID,
-             * lps, ranges and dirCounts that are inconsistent with what is
-             * actually stored in the file system.
-             */
-            // Add another 1001 directories.
-            for (long l = 0; l < 1001; l++) {
-                a.addDir();
-            }
-            // Delete the file store.
-            if (true) {
-                if (Files.exists(p2)) {
-                    IO_Utilities.delete(p2, false);
-                }
-            }
+        }
 //        } catch (Exception ex) {
 //            ex.printStackTrace(System.err);
 //            Assertions.assertTrue(false);
 //        }
-            IO_Utilities.delete(p, true);
+        IO_Utilities.delete(p, true);
     }
+
     /**
      * Test of getLevels method, of class IO_Cache.
      */
@@ -198,15 +202,15 @@ public class IO_CacheTest {
         System.out.println("getDirIndexes");
         long id = 10001L;
         long range = 10L;
-        int levels = IO_Cache.getLevels(id, range);;
-        ArrayList<Long> ranges = IO_Cache.getRanges(id, range);
-        ArrayList<Integer> expResult  = new ArrayList<>();
+        int ls = IO_Cache.getLevels(id, range);
+        ArrayList<Long> rs = IO_Cache.getRanges(id, range);
+        ArrayList<Integer> expResult = new ArrayList<>();
         expResult.add(0);
         expResult.add(1);
         expResult.add(10);
         expResult.add(100);
         expResult.add(1000);
-        ArrayList<Integer> result = IO_Cache.getDirIndexes(id, levels, ranges);
+        ArrayList<Integer> result = IO_Cache.getDirIndexes(id, ls, rs);
         Assertions.assertArrayEquals(expResult.toArray(), result.toArray());
     }
 }

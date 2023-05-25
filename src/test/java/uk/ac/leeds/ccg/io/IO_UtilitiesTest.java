@@ -15,18 +15,10 @@
  */
 package uk.ac.leeds.ccg.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,6 +36,7 @@ import org.junit.jupiter.api.Assertions;
 public class IO_UtilitiesTest {
 
     public IO_UtilitiesTest() {
+        super();
     }
 
     @BeforeAll
