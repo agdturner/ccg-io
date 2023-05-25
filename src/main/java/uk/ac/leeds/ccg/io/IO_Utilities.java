@@ -58,6 +58,11 @@ import java.util.stream.Stream;
 public class IO_Utilities {
 
     /**
+     * Create a new instance.
+     */
+    public IO_Utilities(){}
+    
+    /**
      * If dir is a directory this recursively goes through the contents and
      * creates an ArrayList of the paths of all files (not directories) to
      * return.
@@ -136,7 +141,12 @@ public class IO_Utilities {
      */
     public static <T> T readObject(Path p, T type) throws IOException,
             ClassNotFoundException {
-        return (T) readObject(p);
+        try {
+            @SuppressWarnings("unchecked") T t = (T) readObject(p);
+            return t;
+        } catch (ClassCastException e) {
+            throw e;
+        }
     }
 
     /**
