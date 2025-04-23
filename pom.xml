@@ -38,10 +38,15 @@
             </roles>
         </developer>
     </developers>
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>22</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
+        <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
+        <maven.compiler.testTarget>${maven.compiler.testSource}</maven.compiler.testTarget>
+        <maven.compiler.testRelease>${maven.compiler.testTarget}</maven.compiler.testRelease>
     </properties>
     
     <dependencies>
@@ -49,33 +54,9 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.3</version>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        -->
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        -->
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        -->
     </dependencies>
     
     <build>
@@ -89,7 +70,6 @@
                         <arg>-verbose</arg>
                         <arg>-Xlint:all,-options,-path</arg>
                     </compilerArgs>
-                    <release>22</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -130,9 +110,6 @@
                                 <arg>-verbose</arg>
                                 <arg>-Xlint:all,-options,-path</arg>
                             </compilerArgs>
-                    <source>13</source>
-                    <target>13</target>
-                    <release>13</release>
                         </configuration>
                     </plugin>
                     <plugin>
